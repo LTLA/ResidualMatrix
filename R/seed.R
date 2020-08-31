@@ -47,7 +47,6 @@
 NULL
 
 #' @export
-#' @importFrom methods new is
 #' @importFrom Matrix crossprod
 ResidualMatrixSeed <- function(x, design=NULL, keep=NULL) {
     if (missing(x)) {
@@ -84,7 +83,6 @@ ResidualMatrixSeed <- function(x, design=NULL, keep=NULL) {
 }
 
 #' @importFrom S4Vectors setValidity2
-#' @importFrom methods is
 setValidity2("ResidualMatrixSeed", function(object) {
     msg <- character(0)
 
@@ -119,7 +117,6 @@ setValidity2("ResidualMatrixSeed", function(object) {
 })
 
 #' @export
-#' @importFrom methods show
 setMethod("show", "ResidualMatrixSeed", function(object) {
     cat(sprintf("%i x %i ResidualMatrixSeed object", nrow(object), ncol(object)),
     sep="\n")
