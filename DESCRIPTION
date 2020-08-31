@@ -1,0 +1,29 @@
+Package: ResidualMatrix
+Version: 0.99.0
+Date: 2020-08-30
+Title: Creating a DelayedMatrix of Regression Residuals
+Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
+        email="infinite.monkeys.with.keyboards@gmail.com")
+Imports:
+    methods,
+    Matrix,
+    S4Vectors,
+    DelayedArray
+Suggests: 
+    testthat, 
+    BiocStyle, 
+    knitr, 
+    rmarkdown,
+    rsvd
+biocViews: Software, DataInfrastructure 
+Description: 
+    Provides delayed computation of a matrix of residuals after fitting a
+    linear model to each column of an input matrix. The only requirement is
+    that the input matrix has a suitably efficient set of matrix multiplication
+    operators. Supports partial computation of residuals where selected
+    factors are to be preserved in the output matrix. 
+License: GPL-3
+VignetteBuilder: knitr
+RoxygenNote: 7.1.1
+BugReports: https://github.com/LTLA/ResidualMatrix/issues
+URL: https://github.com/LTLA/ResidualMatrix
