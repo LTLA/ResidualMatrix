@@ -15,7 +15,11 @@ Suggests:
     knitr, 
     rmarkdown,
     rsvd
-biocViews: Software, DataInfrastructure 
+biocViews: 
+    Software, 
+    DataRepresentation,
+    Regression,
+    BatchEffect
 Description: 
     Provides delayed computation of a matrix of residuals after fitting a
     linear model to each column of an input matrix. The only requirement is
