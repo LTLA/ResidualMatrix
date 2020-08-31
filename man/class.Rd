@@ -79,6 +79,10 @@ y
 fit <- lm.fit(x=design, y=as.matrix(y0))
 DelayedArray(fit$residuals)
 
+# Keeping some of the factors:
+y2 <- ResidualMatrix(y0, design, keep=1:2)
+y2
+DelayedArray(fit$residuals + design[,1:2] \%*\% fit$coefficients[1:2,])
 
 # Matrix multiplication:
 crossprod(y)
