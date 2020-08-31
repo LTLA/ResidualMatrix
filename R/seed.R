@@ -62,7 +62,7 @@ ResidualMatrixSeed <- function(x, design=NULL, keep=NULL) {
     }
 
     QR <- qr(design)
-    if (QR$rank < ncol(design)) {
+    if (QR$rank < ncol(design) && nrow(design)!=0) {
         stop("'design' does not appear to be of full rank")
     }
     Q <- as.matrix(qr.Q(QR))
