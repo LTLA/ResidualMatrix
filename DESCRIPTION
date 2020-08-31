@@ -22,10 +22,11 @@ biocViews:
     BatchEffect
 Description: 
     Provides delayed computation of a matrix of residuals after fitting a
-    linear model to each column of an input matrix. The only requirement is
-    that the input matrix has a suitably efficient set of matrix multiplication
-    operators. Supports partial computation of residuals where selected
-    factors are to be preserved in the output matrix. 
+    linear model to each column of an input matrix. Also supports partial
+    computation of residuals where selected factors are to be preserved in the
+    output matrix. Implements a number of efficient methods for operating on
+    the delayed matrix of residuals, most notably matrix multiplication 
+    and calculation of row/column sums or means.
 License: GPL-3
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
