@@ -43,7 +43,7 @@
 #' DelayedArray,ResidualMatrixSeed-method
 #' show,ResidualMatrixSeed-method
 #' @docType class
-#' @name seed
+#' @name ResidualMatrixSeed-class
 NULL
 
 #' @export

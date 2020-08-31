@@ -85,7 +85,7 @@
 #' tcrossprod,ANY,ResidualMatrix-method
 #' tcrossprod,ResidualMatrix,ResidualMatrix-method
 #' 
-#' @name class
+#' @name ResidualMatrix-class
 #' @docType class
 NULL
 
