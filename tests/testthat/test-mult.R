@@ -1,6 +1,16 @@
 # Tests ResidualMatrix multiplication.
 # library(testthat); library(ResidualMatrix); source("setup.R"); source("test-mult.R")
 
+expect_equal_product <- function(x, y) {
+    expect_s4_class(x, "DelayedMatrix")
+    X <- as.matrix(x)
+
+    # standardize NULL dimnames.
+    if (all(lengths(dimnames(X))==0L)) dimnames(X) <- NULL
+    if (all(lengths(dimnames(y))==0L)) dimnames(y) <- NULL
+    expect_equal(X, y)
+}
+
 test_that("ResidualMatrix right multiplication works as expected", {
     possibles <- spawn_scenarios(100, 50)
     for (test in possibles) {
