@@ -15,7 +15,6 @@ vignette: >
 ---
 
 ```{r, echo=FALSE, results="hide", message=FALSE}
-set.seed(100)
 knitr::opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
 ```
 
@@ -25,7 +24,16 @@ A common step in genomics involves computing residuals to regress out uninterest
 However, doing so naively would discard aspects of the underlying matrix representation.
 The most obvious example is the loss of sparsity when a dense matrix of residuals is computed,
 increasing memory usage and compute time in downstream applications.
-This motivates the use of the `ResidualMatrix` class, which provides an alternative to explicit calculation of the residuals.
+The `r Biocpkg("ResidualMatrix")` package implements the `ResidualMatrix` class (duh), 
+which provides an efficient alternative to explicit calculation of the residuals.
+Users can install this package by following the usual Bioconductor installation process:
+
+```r
+if (!requireNamespace("BiocManager", quietly = TRUE)) { 
+    install.packages("BiocManager")
+}
+BiocManager::install("ResidualMatrix")
+```
 
 # Using the `ResidualMatrix`
 
@@ -38,6 +46,7 @@ design <- model.matrix(~gl(5, 10000))
 
 # Making up a large-ish sparse matrix.
 library(Matrix)
+set.seed(100)
 y0 <- rsparsematrix(nrow(design), 30000, 0.01)
 
 library(ResidualMatrix)
