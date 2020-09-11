@@ -1,6 +1,6 @@
 Package: ResidualMatrix
-Version: 0.99.0
-Date: 2020-08-30
+Version: 0.99.1
+Date: 2020-09-10
 Title: Creating a DelayedMatrix of Regression Residuals
 Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
         email="infinite.monkeys.with.keyboards@gmail.com")
@@ -19,7 +19,8 @@ biocViews:
     Software, 
     DataRepresentation,
     Regression,
-    BatchEffect
+    BatchEffect,
+    ExperimentalDesign
 Description: 
     Provides delayed computation of a matrix of residuals after fitting a
     linear model to each column of an input matrix. Also supports partial
