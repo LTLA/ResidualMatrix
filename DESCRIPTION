@@ -1,6 +1,6 @@
 Package: ResidualMatrix
-Version: 0.99.1
-Date: 2020-09-10
+Version: 0.99.2
+Date: 2020-09-25
 Title: Creating a DelayedMatrix of Regression Residuals
 Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
         email="infinite.monkeys.with.keyboards@gmail.com")
@@ -14,7 +14,7 @@ Suggests:
     BiocStyle, 
     knitr, 
     rmarkdown,
-    rsvd
+    BiocSingular 
 biocViews: 
     Software, 
     DataRepresentation,
