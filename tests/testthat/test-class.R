@@ -53,6 +53,9 @@ test_that("ResidualMatrix theory behaves as expected with restriction", {
         design <- generate_design(nrow(y), it)
 
         res <- ResidualMatrix(y, design, restrict=restrict)
+        ref <- ResidualMatrix(y[restrict,,drop=FALSE], design[restrict,,drop=FALSE])
+        expect_equal(as.matrix(res[restrict,,drop=FALSE]), as.matrix(ref))
+
         fit <- lm.fit(x=design[restrict,,drop=FALSE], y=as.matrix(y[restrict,,drop=FALSE]))
         ref <- as.matrix(y) - design %*% fit$coefficients
         dimnames(ref) <- NULL
@@ -60,6 +63,18 @@ test_that("ResidualMatrix theory behaves as expected with restriction", {
         expect_equal(as.matrix(res), ref)
         res <- ResidualMatrix(y, design, restrict=!logical(NR))
         expect_equal(as.matrix(res), as.matrix(ResidualMatrix(y, design)))
+
+        # Works correctly when combined with keep.
+        for (k in 1:ncol(design)) {
+            res <- ResidualMatrix(y, design, keep=k, restrict=restrict)
+
+            test <- fit$coefficients
+            test[k,] <- 0
+            ref <- as.matrix(y) - design %*% test
+            dimnames(ref) <- NULL
+
+            expect_equal(as.matrix(res), ref)
+        }
     }
 })
 
