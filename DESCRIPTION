@@ -1,6 +1,6 @@
 Package: ResidualMatrix
-Version: 0.99.2
-Date: 2020-09-25
+Version: 0.99.3
+Date: 2020-09-26
 Title: Creating a DelayedMatrix of Regression Residuals
 Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
         email="infinite.monkeys.with.keyboards@gmail.com")
