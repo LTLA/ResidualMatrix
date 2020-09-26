@@ -14,6 +14,8 @@
 #' This defaults to an intercept-only matrix.
 #' \item \code{keep}, an integer vector specifying the columns of \code{design} to \emph{not} regress out.
 #' By default, all columns of \code{design} are regressed out.
+#' \item \code{restrict}, an integer or logical vector specifying the rows of \code{x} to use for model fitting.
+#' If \code{NULL}, all rows of \code{x} are used.
 #' }
 #' 
 #' When \code{keep=NULL}, the ResidualMatrix contains values equivalent to \code{lm.fit(x=design, y=x)$residuals}.
@@ -91,8 +93,8 @@ NULL
 
 #' @export
 #' @importFrom DelayedArray DelayedArray
-ResidualMatrix <- function(x, design=NULL, keep=NULL) {
-    DelayedArray(ResidualMatrixSeed(x, design, keep))
+ResidualMatrix <- function(x, design=NULL, keep=NULL, restrict=NULL) {
+    DelayedArray(ResidualMatrixSeed(x, design, keep, restrict))
 }
 
 #' @export

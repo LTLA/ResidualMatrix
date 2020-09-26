@@ -24,6 +24,8 @@ to be used for linear model fitting on each \emph{column} of \code{x}.
 This defaults to an intercept-only matrix.
 \item \code{keep}, an integer vector specifying the columns of \code{design} to \emph{not} regress out.
 By default, all columns of \code{design} are regressed out.
+\item \code{restrict}, an integer or logical vector specifying the rows of \code{x} to use for model fitting.
+If \code{NULL}, all rows of \code{x} are used.
 }
 }
 

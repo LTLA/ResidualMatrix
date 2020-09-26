@@ -12,6 +12,8 @@
 #' This defaults to an intercept-only matrix.
 #' \item \code{keep}, an integer vector specifying the columns of \code{design} to \emph{not} regress out.
 #' By default, all columns of \code{design} are regressed out.
+#' \item \code{restrict}, an integer or logical vector specifying the rows of \code{x} to use for model fitting.
+#' If \code{NULL}, all rows of \code{x} are used.
 #' }
 #' 
 #' @section Methods:
@@ -48,7 +50,7 @@ NULL
 
 #' @export
 #' @importFrom Matrix crossprod
-ResidualMatrixSeed <- function(x, design=NULL, keep=NULL) {
+ResidualMatrixSeed <- function(x, design=NULL, keep=NULL, restrict=NULL) {
     if (missing(x)) {
         x <- matrix(0, 0, 0)
     } else if (is(x, "ResidualMatrixSeed")) {
@@ -65,18 +67,42 @@ ResidualMatrixSeed <- function(x, design=NULL, keep=NULL) {
     if (QR$rank < ncol(design) && nrow(design)!=0) {
         stop("'design' does not appear to be of full rank")
     }
-    Q <- as.matrix(qr.Q(QR))
-    Qty <- as.matrix(crossprod(Q, x))
 
-    if (!is.null(keep)) {
-        # We want to add back X %*% coef', where non-kept coefs are set to zero in coef'.
-        # As X %*% coef' = QR %*% coef' = Q (R %*% coef'), we can just subtract (R %*% coef') from Qty.
-        # We subtract here because Qty is itself subtracted to obtain the residuals,
-        # so if we want to add X %*% coef' back to the residuals, we need to subtract here.
+    Q <- as.matrix(qr.Q(QR))
+
+    if (is.null(restrict) && is.null(keep)) {
+        Qty <- as.matrix(crossprod(Q, x))
+    } else if (!is.null(restrict)) {
+        subdesign <- design[restrict,,drop=FALSE]
+        subQR <- qr(subdesign)
+        if (subQR$rank < ncol(subdesign) && nrow(subdesign)!=0) {
+            stop("'design[restrict,]' does not appear to be of full rank")
+        }
+
+        subQ <- as.matrix(qr.Q(subQR))
+        subQty <- as.matrix(crossprod(subQ, x[restrict,,drop=FALSE]))
+        subR <- qr.R(subQR)
+        coefs <- backsolve(subR, subQty)
+
+        if (!is.null(keep)) {
+            # See the logic in the next clause.
+            coefs[subQR$pivot %in% keep,] <- 0 
+        }
+        coefs <- coefs[match(QR$pivot, subQR$pivot),,drop=FALSE]
+
+        # We want to subtract the fitted values obtained by X %*% coefs,
+        # where coefs is computed using only the restricted subset of samples.
+        # This leads use to realize that X %*% coefs is just Q (R %*% coefs).
         R <- qr.R(QR)
+        Qty <- R %*% coefs
+    } else {
+        # We want to subtract the fitted values X %*% coef', where kept coefs are set to zero in coef'.
+        # As X %*% coef' = QR %*% coef' = Q (R %*% coef'), we can use (R %*% coef') as our Qty.
+        R <- qr.R(QR)
+        Qty <- as.matrix(crossprod(Q, x))
         coefs <- backsolve(R, Qty)
-        coefs[!QR$pivot %in% keep,] <- 0 # I've never been able to get a full-rank example that uses non-trivial pivoting.
-        Qty <- Qty - R %*% coefs
+        coefs[QR$pivot %in% keep,] <- 0 
+        Qty <- R %*% coefs
     }
 
     new("ResidualMatrixSeed", .matrix=x, Q=Q, Qty=Qty, transposed=FALSE)

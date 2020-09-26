@@ -18,9 +18,6 @@ test_that("ResidualMatrix theory behaves as expected", {
 
 set.seed(100002)
 test_that("ResidualMatrix theory behaves as expected with kept coefficients", {
-    output <- vector("list", 8)
-    counter <- 1L
-
     NR <- 1501
     NC <- 121
 
@@ -41,6 +38,28 @@ test_that("ResidualMatrix theory behaves as expected with kept coefficients", {
 
         res <- ResidualMatrix(y, design, keep=seq_len(ncol(design)))
         expect_equal(as.matrix(res), y)
+    }
+})
+
+set.seed(100002)
+test_that("ResidualMatrix theory behaves as expected with restriction", {
+    NR <- 501
+    NC <- 121
+    restrict <- sample(NR, NR/2)
+
+    # Run through a host of different design matrices.
+    for (it in 2:5) {
+        y <- matrix(rnorm(NR*NC), ncol=NC)
+        design <- generate_design(nrow(y), it)
+
+        res <- ResidualMatrix(y, design, restrict=restrict)
+        fit <- lm.fit(x=design[restrict,,drop=FALSE], y=as.matrix(y[restrict,,drop=FALSE]))
+        ref <- as.matrix(y) - design %*% fit$coefficients
+        dimnames(ref) <- NULL
+
+        expect_equal(as.matrix(res), ref)
+        res <- ResidualMatrix(y, design, restrict=!logical(NR))
+        expect_equal(as.matrix(res), as.matrix(ResidualMatrix(y, design)))
     }
 })
 
