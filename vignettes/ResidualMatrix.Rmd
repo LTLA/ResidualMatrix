@@ -6,7 +6,7 @@ author:
 date: "Revised: 30 August 2020"
 output:
   BiocStyle::html_document:
-    toc: false
+    toc_float: true 
 package: ResidualMatrix
 vignette: >
   %\VignetteIndexEntry{Using the ResidualMatrix}
@@ -66,7 +66,7 @@ In fact, matrix multiplication steps involving a `ResidualMatrix` do not need to
 This means that `ResidualMatrix` objects can be efficiently used in approximate PCA algorithms based on multiplication,
 as shown below for randomized SVD via `r Biocpkg("BiocSingular")`'s `runPCA()` function.
 The only requirement is that the original matrix has a reasonably efficient matrix multiplication operator.
-(We also set `deferred=TRUE` to ensure that our object does not collapse to a `DelayedMatrix` upon centering;
+(For randomized PCA, we also set `deferred=TRUE` to ensure that our object does not collapse to a `DelayedMatrix` upon centering;
 this speeds up the computation without changing the result, given the column means for the residuals should be zero anyway.)
 
 ```{r}
@@ -110,7 +110,28 @@ resid2
 In this sense, the `ResidualMatrix` is effectively a delayed version of `removeBatchEffect()`,
 the old workhorse function from `r Biocpkg("limma")`.
 
-# Session information
+# Restricting observations
+
+In some cases, we may only be confident in the correctness of `design` for a subset of our samples.
+For example, we may have several batches of observations, each of which contains a subset of control observations.
+All other observations in each batch have unknown structure but are affected by the same additive batch effect as the controls.
+We would like to use the controls to remove the batch effect without making assumptions about the other observations.
+
+To achieve this, we set the `restrict=` argument in the `ResidualMatrix` constructor.
+This performs model fitting using only the specified (control) subset to estimate the batch effect.
+It then uses those estimates to perform regression on all observations.
+This option can also be combined with `keep` if the controls themselves have some structure that should be retained.
+
+```{r}
+batches <- gl(3, 1000)
+controls <- c(1:100, 1:100+1000, 1:100+2000)
+y <- matrix(rnorm(30000), nrow=3000)
+
+resid3 <- ResidualMatrix(y, design=model.matrix(~batches), restrict=controls)
+resid3
+```
+
+# Session information {-}
 
 ```{r}
 sessionInfo()
