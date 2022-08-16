@@ -12,7 +12,7 @@ test_that("ResidualMatrix theory behaves as expected", {
         expect_equal(extract_array(test$res, list(1:10, 1:10)), test$ref[1:10, 1:10])
         expect_equal(extract_array(test$res, list(1:10, NULL)), test$ref[1:10,])
         expect_equal(extract_array(test$res, list(NULL, 1:10)), test$ref[,1:10])
-        expect_equal(as.matrix(test$res), test$ref)
+        expect_equal(purgenames(as.matrix(test$res)), purgenames(test$ref))
     }
 })
 

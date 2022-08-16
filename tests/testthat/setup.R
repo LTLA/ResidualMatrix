@@ -70,3 +70,10 @@ spawn_scenarios <- function(NR=50, NC=20) {
         )
     )
 }
+
+purgenames <- function(mat) {
+    if (identical(dimnames(mat), list(NULL, NULL))) {
+        dimnames(mat) <- NULL
+    }
+    mat
+}

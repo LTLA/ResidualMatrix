@@ -13,7 +13,7 @@ test_that("ResidualMatrix utility functions work as expected", {
         tdef <- t(test$res)
         expect_s4_class(tdef, "ResidualMatrix") # still a ResMat!
         expect_equal(t(tdef), test$res)
-        expect_equal(as.matrix(tdef), t(test$ref))
+        expect_equal(purgenames(as.matrix(tdef)), purgenames(t(test$ref)))
 
         # Checking column names getting and setting.
         spawn_names <- sprintf("THING_%i", seq_len(ncol(test$res)))
@@ -40,7 +40,7 @@ set.seed(1000011)
 test_that("ResidualMatrix subsetting works as expected", {
     expect_equal_and_resmat <- function(x, y) {
         expect_s4_class(x, "ResidualMatrix") # class is correctly preserved by direct seed modification.
-        expect_equal(as.matrix(x), y)
+        expect_equal(purgenames(as.matrix(x)), purgenames(y))
     }
 
     possibles <- spawn_scenarios()

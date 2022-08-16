@@ -1,6 +1,6 @@
 Package: ResidualMatrix
-Version: 1.7.0
-Date: 2020-09-26
+Version: 1.7.1
+Date: 2022-08-15
 Title: Creating a DelayedMatrix of Regression Residuals
 Authors@R: person("Aaron", "Lun", role=c("aut", "cre", "cph"),
         email="infinite.monkeys.with.keyboards@gmail.com")
@@ -30,6 +30,6 @@ Description:
     and calculation of row/column sums or means.
 License: GPL-3
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 BugReports: https://github.com/LTLA/ResidualMatrix/issues
 URL: https://github.com/LTLA/ResidualMatrix
