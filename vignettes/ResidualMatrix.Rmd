@@ -66,13 +66,12 @@ In fact, matrix multiplication steps involving a `ResidualMatrix` do not need to
 This means that `ResidualMatrix` objects can be efficiently used in approximate PCA algorithms based on multiplication,
 as shown below for randomized SVD via `r Biocpkg("BiocSingular")`'s `runPCA()` function.
 The only requirement is that the original matrix has a reasonably efficient matrix multiplication operator.
-(For randomized PCA, we also set `deferred=TRUE` to ensure that our object does not collapse to a `DelayedMatrix` upon centering;
-this speeds up the computation without changing the result, given the column means for the residuals should be zero anyway.)
+(We set `center=FALSE` for efficiency as the residuals are already column-centered.)
 
 ```{r}
 set.seed(100)
-system.time(pc.out <- BiocSingular::runPCA(resids, 10, 
-    BSPARAM=BiocSingular::RandomParam(deferred=TRUE)))
+system.time(pc.out <- BiocSingular::runPCA(resids, 10, center=FALSE,
+    BSPARAM=BiocSingular::RandomParam()))
 str(pc.out)
 ```
 
