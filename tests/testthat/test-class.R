@@ -86,3 +86,17 @@ test_that("ResidualMatrix theory throws with non-full rank", {
     X <- cbind(model.matrix(~g2), model.matrix(~g))
     expect_error(res <- ResidualMatrix(y, X), "full rank")
 })
+
+set.seed(100003)
+test_that("ResidualMatrix works with DelayedArray inputs", {
+    NR <- 101
+    NC <- 121
+    cov <- rnorm(NR)
+    design <- model.matrix(~cov)
+
+    mat <- matrix(rnorm(NR * NC), NR, NC)
+    ref <- ResidualMatrix(mat, design)
+    delayed <- ResidualMatrix(DelayedArray(mat), design)
+
+    expect_identical(as.matrix(ref), as.matrix(delayed))
+})

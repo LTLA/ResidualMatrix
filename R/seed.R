@@ -185,11 +185,11 @@ setMethod("extract_array", "ResidualMatrixSeed", function(x, index) {
         index <- rev(index)
     }
 	x2 <- subset_ResidualMatrixSeed(x, index[[1]], index[[2]])
-    resid <- get_matrix2(x2) - get_Q(x2) %*% get_Qty(x2)
+    resid <- as.matrix(get_matrix2(x2)) - as.matrix(get_Q(x2) %*% get_Qty(x2))
     if (was_transposed) {
         resid <- t(resid)
     }
-    as.matrix(resid)
+    resid
 })
 
 ###################################
